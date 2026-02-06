@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" fill="none">
+  <!-- Notebook paper background - wobbly rectangle -->
+  <path
+    d="M8 6 Q10 4 54 5 Q58 6 57 58 Q56 61 10 60 Q6 58 8 6"
+    fill="#fff9c4"
+    stroke="#2d2d2d"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Spiral binding holes -->
+  <circle cx="14" cy="12" r="2" fill="#2d2d2d"/>
+  <circle cx="14" cy="22" r="2" fill="#2d2d2d"/>
+  <circle cx="14" cy="32" r="2" fill="#2d2d2d"/>
+  <circle cx="14" cy="42" r="2" fill="#2d2d2d"/>
+  <circle cx="14" cy="52" r="2" fill="#2d2d2d"/>
+
+  <!-- Notebook lines - sketchy -->
+  <path d="M20 20 Q35 19 50 20" stroke="#2d5da1" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <path d="M20 30 Q34 31 50 30" stroke="#2d5da1" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <path d="M20 40 Q36 39 50 40" stroke="#2d5da1" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+  <path d="M20 50 Q33 51 50 50" stroke="#2d5da1" stroke-width="1" stroke-opacity="0.3" stroke-linecap="round"/>
+
+  <!-- Lightbulb - hand drawn style -->
+  <g stroke="#2d2d2d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Bulb outline -->
+    <path d="M32 14 Q22 16 22 28 Q22 35 27 38 L27 44 Q27 46 32 46 Q37 46 37 44 L37 38 Q42 35 42 28 Q42 16 32 14"/>
+    <!-- Base lines -->
+    <path d="M29 42 L35 42"/>
+    <path d="M30 44 L34 44"/>
+  </g>
+
+  <!-- Light rays - sketchy red accents -->
+  <path d="M32 8 L32 11" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+  <path d="M44 18 L47 15" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+  <path d="M20 18 L17 15" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+  <path d="M46 28 L49 28" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 28 L15 28" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Small sparkle/star doodle -->
+  <path d="M48 10 L50 8 M49 9 L47 7 M49 7 L49 11 M47 9 L51 9" stroke="#2d5da1" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Text: CSC 126 - handwritten style -->
+  <text x="72" y="30" font-family="Kalam, cursive" font-size="22" font-weight="700" fill="#2d2d2d">
+    CSC 126
+  </text>
+
+  <!-- Text: Project Finder -->
+  <text x="72" y="50" font-family="Patrick Hand, cursive" font-size="16" fill="#2d2d2d" opacity="0.7">
+    Project Finder
+  </text>
+
+  <!-- Decorative underline squiggle -->
+  <path d="M72 54 Q90 58 108 54 Q126 50 144 54 Q162 58 180 54" stroke="#ff4d4d" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- Small doodle stars -->
+  <circle cx="200" cy="20" r="2" fill="#ff4d4d"/>
+  <circle cx="195" cy="40" r="1.5" fill="#2d5da1"/>
+  <circle cx="205" cy="35" r="1" fill="#2d2d2d"/>
+</svg>

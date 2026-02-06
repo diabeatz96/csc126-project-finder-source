@@ -1,0 +1,213 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Patrick Hand', cursive;
+    background-color: #fdfbf7;
+    color: #2d2d2d;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(#e5e0d8 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  a {
+    color: #2d5da1;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  a:hover {
+    color: #ff4d4d;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Wobbly border radius utility - applied via inline styles */
+  .border-wobbly {
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  }
+
+  .border-wobbly-md {
+    border-radius: 15px 255px 15px 225px / 225px 15px 255px 15px;
+  }
+
+  .border-wobbly-sm {
+    border-radius: 40px 8px 50px 6px / 8px 50px 6px 40px;
+  }
+
+  /* Hand-drawn underline animation */
+  .underline-sketch {
+    position: relative;
+  }
+
+  .underline-sketch::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
+  .underline-sketch:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* Tape decoration */
+  .tape-decoration::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 60px;
+    height: 20px;
+    background: rgba(200, 200, 200, 0.5);
+    border-radius: 2px;
+  }
+
+  /* Thumbtack decoration */
+  .tack-decoration::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    background: #ff4d4d;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  /* Code block styling */
+  .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: #fdfbf7;
+    border: 2px solid #2d2d2d;
+    border-radius: 8px 2px 12px 4px / 2px 10px 4px 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    color: #2d2d2d;
+    line-height: 1.7;
+    white-space: pre;
+    box-shadow: 3px 3px 0px 0px rgba(45, 45, 45, 0.15);
+  }
+}
+
+@layer utilities {
+  /* Jiggle animation on hover */
+  .hover-jiggle {
+    transition: transform 0.1s ease;
+  }
+
+  .hover-jiggle:hover {
+    transform: rotate(-1deg);
+  }
+
+  /* Bounce animation for decorative elements */
+  @keyframes gentle-bounce {
+    0%, 100% {
+      transform: translateY(0) rotate(3deg);
+    }
+    50% {
+      transform: translateY(-8px) rotate(-3deg);
+    }
+  }
+
+  .animate-bounce-gentle {
+    animation: gentle-bounce 3s ease-in-out infinite;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    background-image: none !important;
+    background-color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Hide navigation and footer */
+  nav, footer {
+    display: none !important;
+  }
+
+  /* Remove shadows and decorations for cleaner print */
+  .shadow-sketch,
+  .shadow-sketch-lg,
+  .shadow-sketch-hover,
+  .shadow-sketch-subtle {
+    box-shadow: none !important;
+  }
+
+  /* Hide decorative elements */
+  .tape-decoration::before,
+  .tack-decoration::before {
+    display: none !important;
+  }
+
+  /* Ensure proper page breaks */
+  .print\\:break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure text is readable */
+  * {
+    color: #2d2d2d !important;
+  }
+
+  /* Make badges print-friendly */
+  .border-foreground {
+    border-color: #2d2d2d !important;
+  }
+
+  /* Reset rotations for print */
+  .print\\:rotate-0 {
+    transform: rotate(0deg) !important;
+  }
+
+  /* Compact spacing for print */
+  .max-w-3xl {
+    max-width: 100% !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 0.75in;
+    size: letter;
+  }
+}
