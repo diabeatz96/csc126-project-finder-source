@@ -1,141 +1,62 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React from "react";
+import { useParams, useLocation, Link } from "react-router-dom";
 import projectRecommendations from "../data/projectRecommendations";
-import { Button, Card, Badge } from "../components/ui";
-import { ChevronRight, Printer, Download } from "lucide-react";
+import { Button, Card } from "../components/ui";
+import { Printer, Download } from "lucide-react";
+import ProjectCard from "../components/ProjectCard";
 
-function Collapsible({ title, children, defaultOpen = false }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="mt-4">
-      <button
-        className={`
-          flex items-center gap-2
-          font-hand text-lg text-secondary
-          hover:text-accent
-          transition-colors
-        `}
-        onClick={() => setOpen(!open)}
-      >
-        <ChevronRight
-          size={18}
-          strokeWidth={3}
-          className={`transition-transform duration-200 ${open ? "rotate-90" : ""}`}
-        />
-        {title}
-      </button>
-      {open && <div className="mt-2 ml-6">{children}</div>}
-    </div>
-  );
-}
+const dimensionInfo = {
+  realistic:     { label: "Realistic",     emoji: "🔧", color: "#e74c3c" },
+  investigative: { label: "Investigative", emoji: "🔬", color: "#3498db" },
+  artistic:      { label: "Artistic",      emoji: "🎨", color: "#9b59b6" },
+  social:        { label: "Social",        emoji: "🤝", color: "#2ecc71" },
+  enterprising:  { label: "Enterprising",  emoji: "🚀", color: "#e67e22" },
+  conventional:  { label: "Conventional",  emoji: "📋", color: "#16a085" },
+};
 
-function ProjectCard({ project, index }) {
-  const difficultyVariant =
-    project.difficulty.toLowerCase() === "beginner"
-      ? "beginner"
-      : project.difficulty.toLowerCase() === "intermediate"
-      ? "intermediate"
-      : "advanced";
+function ScoreBreakdown({ scores }) {
+  if (!scores) return null;
+
+  const maxScore = Math.max(...Object.values(scores), 1);
 
   return (
-    <Card
-      className={`mb-6 print:rotate-0 print:shadow-none print:border print:break-inside-avoid ${index % 2 === 0 ? "-rotate-[0.5deg]" : "rotate-[0.5deg]"}`}
-      decoration={index % 2 === 0 ? "tape" : "tack"}
-    >
-      {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-        <h3 className="font-kalam text-xl md:text-2xl font-bold text-foreground">
-          {project.name}
-        </h3>
-        <Badge variant={difficultyVariant}>{project.difficulty}</Badge>
-      </div>
-
-      {/* Description */}
-      <p className="font-hand text-lg text-foreground/80 leading-relaxed mb-4">
-        {project.description}
+    <Card className="mb-8 print:break-inside-avoid" decoration="tape">
+      <h3 className="font-kalam text-xl md:text-2xl font-bold text-foreground mb-4">
+        Your Score Breakdown
+      </h3>
+      <p className="font-hand text-foreground/60 mb-4">
+        Here's how your answers scored across the six RIASEC dimensions:
       </p>
-
-      {/* Concepts */}
-      <div className="mb-4">
-        <div className="font-kalam text-sm font-bold text-foreground/60 uppercase tracking-wide mb-2">
-          C++ Concepts Used
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {project.concepts.map((c, i) => (
-            <Badge key={i} variant="concept">
-              {c}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      {/* Raylib Functions */}
-      <div className="mb-2">
-        <div className="font-kalam text-sm font-bold text-foreground/60 uppercase tracking-wide mb-2">
-          Raylib Functions You'll Need
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {project.raylibFunctions.map((fn, i) => (
-            <Link key={i} to="/api" className="print:pointer-events-none">
-              <Badge variant="function">{fn}()</Badge>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* Steps - always visible in print */}
-      <div className="border-t-2 border-dashed border-foreground/20 pt-4 mt-4">
-        <div className="hidden print:block">
-          <div className="font-kalam text-sm font-bold text-foreground/60 uppercase tracking-wide mb-2">
-            Step-by-step roadmap
-          </div>
-          <ol className="list-none space-y-2">
-            {project.steps.map((step, i) => (
-              <li key={i} className="flex gap-3 font-hand text-foreground/80 text-sm">
-                <span className="font-bold">{i + 1}.</span>
-                <span>{step}</span>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-4">
-            <div className="font-kalam text-sm font-bold text-foreground/60 uppercase tracking-wide mb-2">
-              Starter hint
-            </div>
-            <p className="font-hand text-foreground/80 text-sm">
-              <span className="font-bold">Hint: </span>
-              {project.starterHint}
-            </p>
-          </div>
-        </div>
-
-        {/* Collapsibles - hidden in print */}
-        <div className="print:hidden">
-          <Collapsible title="Step-by-step roadmap" defaultOpen={false}>
-            <ol className="list-none space-y-3">
-              {project.steps.map((step, i) => (
-                <li key={i} className="flex gap-3 font-hand text-foreground/80">
-                  <span
-                    className="flex-shrink-0 w-7 h-7 flex items-center justify-center bg-muted border-2 border-foreground text-sm font-bold"
-                    style={{ borderRadius: "50% 45% 55% 48% / 48% 52% 45% 55%" }}
-                  >
-                    {i + 1}
-                  </span>
-                  <span className="pt-0.5">{step}</span>
-                </li>
-              ))}
-            </ol>
-          </Collapsible>
-
-          <Collapsible title="Starter hint" defaultOpen={false}>
-            <div
-              className="p-4 bg-postit border-2 border-foreground font-hand text-foreground/80"
-              style={{ borderRadius: "40px 8px 50px 6px / 8px 50px 6px 40px" }}
-            >
-              <span className="font-bold text-accent">Hint: </span>
-              {project.starterHint}
-            </div>
-          </Collapsible>
-        </div>
+      <div className="space-y-3">
+        {Object.entries(scores)
+          .sort((a, b) => b[1] - a[1])
+          .map(([key, value]) => {
+            const info = dimensionInfo[key];
+            return (
+              <div key={key} className="flex items-center gap-3">
+                <span className="text-lg flex-shrink-0">{info.emoji}</span>
+                <span className="w-28 font-hand text-foreground/80 text-sm md:text-base flex-shrink-0">
+                  {info.label}
+                </span>
+                <div
+                  className="flex-1 h-6 bg-muted border-2 border-foreground overflow-hidden"
+                  style={{ borderRadius: "8px 40px 8px 40px / 40px 8px 40px 8px" }}
+                >
+                  <div
+                    className="h-full transition-all duration-500"
+                    style={{
+                      width: `${(value / maxScore) * 100}%`,
+                      backgroundColor: info.color,
+                      borderRadius: "6px 38px 6px 38px / 38px 6px 38px 6px",
+                    }}
+                  />
+                </div>
+                <span className="w-8 text-right font-kalam font-bold text-foreground">
+                  {value}
+                </span>
+              </div>
+            );
+          })}
       </div>
     </Card>
   );
@@ -143,6 +64,8 @@ function ProjectCard({ project, index }) {
 
 function Results() {
   const { type } = useParams();
+  const location = useLocation();
+  const scores = location.state?.scores;
   const data = projectRecommendations[type];
 
   const handlePrint = () => {
@@ -157,6 +80,21 @@ function Results() {
     content += `Your Result: ${data.title} ${data.emoji}\n`;
     content += `${data.tagline}\n\n`;
     content += `${data.description}\n\n`;
+
+    if (scores) {
+      content += `${"=".repeat(40)}\n`;
+      content += `SCORE BREAKDOWN\n`;
+      content += `${"=".repeat(40)}\n\n`;
+      Object.entries(scores)
+        .sort((a, b) => b[1] - a[1])
+        .forEach(([key, value]) => {
+          const info = dimensionInfo[key];
+          const bar = "█".repeat(value) + "░".repeat(Math.max(0, 15 - value));
+          content += `${info.emoji} ${info.label.padEnd(14)} ${bar} ${value}\n`;
+        });
+      content += `\n`;
+    }
+
     content += `${"=".repeat(40)}\n`;
     content += `YOUR RECOMMENDED PROJECTS\n`;
     content += `${"=".repeat(40)}\n\n`;
@@ -246,8 +184,22 @@ function Results() {
         </div>
       </div>
 
-      {/* Projects */}
+      {/* Score Breakdown */}
       <div className="max-w-3xl mx-auto">
+        <ScoreBreakdown scores={scores} />
+
+        {!scores && (
+          <Card className="mb-8 text-center" variant="muted">
+            <p className="font-hand text-foreground/60">
+              Take the quiz to see your detailed score breakdown across all six RIASEC dimensions.
+            </p>
+            <Button to="/quiz" variant="secondary" size="sm" className="mt-3">
+              Take the Quiz
+            </Button>
+          </Card>
+        )}
+
+        {/* Projects */}
         <h2 className="font-kalam text-2xl md:text-3xl font-bold mb-2 print:text-xl">
           Your Recommended Projects
         </h2>
@@ -282,10 +234,11 @@ function Results() {
 
           <h3 className="font-kalam text-xl font-bold mb-2">Not feeling these?</h3>
           <p className="font-hand text-foreground/70 mb-4">
-            No worries. You can retake the quiz or browse all the other project categories.
+            No worries. You can retake the quiz, browse all projects, or check out the other categories.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
             <Button to="/quiz">Retake Quiz</Button>
+            <Button to="/projects" variant="secondary">All Projects</Button>
             {Object.entries(projectRecommendations)
               .filter(([key]) => key !== type)
               .map(([key, val]) => (

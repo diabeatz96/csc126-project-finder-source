@@ -138,19 +138,83 @@ int main() {
         </p>
       </Card>
 
-      {/* Mac/Linux Card */}
+      {/* Mac Setup Card */}
       <Card className="mt-4 rotate-1" variant="postit">
-        <h3 className="font-kalam text-xl font-bold mb-3">Mac or Linux?</h3>
+        <h3 className="font-kalam text-xl font-bold mb-3">Mac Setup (Homebrew)</h3>
         <div className="font-hand text-foreground/80 space-y-4">
           <div>
-            <strong className="text-foreground">Mac:</strong> Install with Homebrew:{" "}
-            <code className="font-mono bg-white/50 px-1 py-0.5 rounded">brew install raylib</code>, then compile with:
-            <pre className="code-block text-xs mt-2">g++ -o game main.cpp -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo</pre>
+            <p className="mb-2">
+              <strong className="text-foreground">Step 1: Install Homebrew</strong> (if you don't have it)
+            </p>
+            <p className="mb-2 text-sm">
+              Open <strong>Terminal</strong> (search for it in Spotlight or find it in Applications → Utilities) and paste this command:
+            </p>
+            <pre className="code-block text-xs mb-3">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre>
+            <p className="text-sm mb-2">
+              Follow the on-screen prompts. You may need to enter your Mac password. When it finishes, it will display two commands to add Homebrew to your PATH. They look like this:
+            </p>
+            <pre className="code-block text-xs mb-3">
+{`echo >> ~/.zprofile
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"`}
+            </pre>
+            <p className="text-sm mb-2">
+              <strong>Copy and paste those exact commands</strong> from your Terminal output (they may differ slightly depending on your setup). Then close and reopen Terminal.
+            </p>
           </div>
           <div>
-            <strong className="text-foreground">Linux:</strong> Install with your package manager (e.g.,{" "}
-            <code className="font-mono bg-white/50 px-1 py-0.5 rounded">sudo apt install libraylib-dev</code> on Ubuntu/Debian), then compile with:
+            <p className="mb-2">
+              <strong className="text-foreground">Step 2: Verify Homebrew</strong>
+            </p>
+            <pre className="code-block text-xs mb-2">brew --version</pre>
+            <p className="text-sm">
+              You should see something like "Homebrew 4.x.x". If you get "command not found", revisit Step 1 and make sure you ran the PATH commands.
+            </p>
+          </div>
+          <div>
+            <p className="mb-2">
+              <strong className="text-foreground">Step 3: Install raylib</strong>
+            </p>
+            <pre className="code-block text-xs mb-2">brew install raylib</pre>
+            <p className="text-sm">
+              This downloads and installs raylib and all its dependencies automatically.
+            </p>
+          </div>
+          <div>
+            <p className="mb-2">
+              <strong className="text-foreground">Step 4: Compile and run</strong>
+            </p>
+            <p className="text-sm mb-2">
+              Create your <code className="font-mono bg-white/50 px-1 py-0.5 rounded">main.cpp</code> file (use the same starter code from Step 4 above), then compile with:
+            </p>
+            <pre className="code-block text-xs mb-2">g++ -o game main.cpp $(pkg-config --libs --cflags raylib)</pre>
+            <p className="text-sm mb-2">
+              If <code className="font-mono bg-white/50 px-1 py-0.5 rounded">pkg-config</code> doesn't work, use the full flags:
+            </p>
+            <pre className="code-block text-xs mb-2">g++ -o game main.cpp -lraylib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo</pre>
+            <p className="text-sm">
+              Then run your program: <code className="font-mono bg-white/50 px-1 py-0.5 rounded">./game</code>
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Linux Card */}
+      <Card className="mt-4 -rotate-[0.5deg]" variant="muted">
+        <h3 className="font-kalam text-xl font-bold mb-3">Linux Setup</h3>
+        <div className="font-hand text-foreground/80 space-y-3">
+          <div>
+            <strong className="text-foreground">Ubuntu/Debian:</strong>
+            <pre className="code-block text-xs mt-2">sudo apt install libraylib-dev</pre>
+          </div>
+          <div>
+            <strong className="text-foreground">Compile with:</strong>
             <pre className="code-block text-xs mt-2">g++ -o game main.cpp -lraylib -lGL -lm -lpthread -ldl -lrt -lX11</pre>
+          </div>
+          <div>
+            <p className="text-sm">
+              Then run: <code className="font-mono bg-muted px-1 py-0.5 rounded">./game</code>
+            </p>
           </div>
         </div>
       </Card>

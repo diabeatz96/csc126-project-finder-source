@@ -77,7 +77,7 @@ function Home() {
             Research-Backed Quiz
           </h3>
           <p className="font-hand text-foreground/70">
-            8 questions based on Holland's RIASEC interest model, adapted for
+            18 questions based on Holland's RIASEC interest model, adapted for
             computer science. Discover what kind of programmer you are and what
             motivates you.
           </p>
@@ -189,11 +189,16 @@ function Home() {
           Ready to find your project?
         </h2>
         <p className="font-hand text-lg text-foreground/70 mb-6">
-          The quiz takes about 2 minutes. No wrong answers.
+          The quiz takes about 5 minutes. No wrong answers.
         </p>
-        <Button to="/quiz" size="lg">
-          Start the Quiz
-        </Button>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Button to="/quiz" size="lg">
+            Start the Quiz
+          </Button>
+          <Button to="/projects" variant="secondary" size="lg">
+            Browse All Projects
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -137,6 +137,10 @@ const apiReference = [
           { name: "color", type: "Color", desc: "Fill color" },
         ],
         example: "DrawCircle(400, 225, 50, RED);",
+        examples: [
+          "DrawCircle(400, 225, 50, RED);",
+          "// Draw a trail of fading circles\nfor (int i = 0; i < 10; i++) {\n    DrawCircle(100 + i * 30, 225, 10, Fade(BLUE, i * 0.1f));\n}",
+        ],
         returns: "void",
       },
       {
@@ -295,6 +299,11 @@ const apiReference = [
           { name: "color", type: "Color", desc: "Text color" },
         ],
         example: 'DrawText("Hello World!", 100, 100, 20, DARKGRAY);',
+        examples: [
+          'DrawText("Hello World!", 100, 100, 20, DARKGRAY);',
+          '// Center text on screen\nconst char *msg = "Game Over";\nint w = MeasureText(msg, 40);\nDrawText(msg, 400 - w/2, 200, 40, RED);',
+          '// Display a variable\nDrawText(TextFormat("Score: %d", score), 10, 10, 20, BLACK);',
+        ],
         returns: "void",
       },
       {
@@ -475,6 +484,11 @@ const apiReference = [
           { name: "max", type: "int", desc: "Maximum value (inclusive)" },
         ],
         example: "int randX = GetRandomValue(0, 800);",
+        examples: [
+          "int randX = GetRandomValue(0, 800);",
+          "// Random color\nColor randColor = (Color){GetRandomValue(0,255), GetRandomValue(0,255), GetRandomValue(0,255), 255};",
+          "// Random delay between 2-5 seconds\nfloat delay = GetRandomValue(2, 5);",
+        ],
         returns: "int",
       },
       {
@@ -498,7 +512,229 @@ const apiReference = [
           { name: "value", type: "float", desc: "0.0 (black) to 1.0 (bright)" },
         ],
         example: "Color rainbow = ColorFromHSV(frameCount % 360, 1.0f, 1.0f);",
+        examples: [
+          "Color rainbow = ColorFromHSV(frameCount % 360, 1.0f, 1.0f);",
+          "// Draw a rainbow gradient\nfor (int i = 0; i < 360; i++) {\n    DrawRectangle(i * 2, 100, 2, 50, ColorFromHSV(i, 1.0f, 1.0f));\n}",
+        ],
         returns: "Color",
+      },
+    ],
+  },
+  {
+    category: "Advanced Input",
+    description: "Functions for detecting text input and any key press. Useful for games that need typed text like hangman, chat, or task managers.",
+    functions: [
+      {
+        name: "GetKeyPressed",
+        signature: "int GetKeyPressed(void)",
+        description: "Returns the key code of the last key pressed, or 0 if no key was pressed this frame. Useful when you need to detect ANY key, not just a specific one.",
+        params: [],
+        example: "int key = GetKeyPressed();\nif (key != 0) lastKey = key;",
+        examples: [
+          "int key = GetKeyPressed();\nif (key != 0) lastKey = key;",
+          "// Build a string from keyboard input\nint key = GetKeyPressed();\nif (key >= 32 && key <= 126) {\n    text[charCount] = (char)key;\n    charCount++;\n}",
+        ],
+        returns: "int - key code, or 0 if none",
+      },
+      {
+        name: "GetCharPressed",
+        signature: "int GetCharPressed(void)",
+        description: "Returns the Unicode character of the last key pressed. Unlike GetKeyPressed, this gives you the actual typed character (respecting shift, caps lock, etc.). Perfect for text input fields.",
+        params: [],
+        example: "int ch = GetCharPressed();\nif (ch != 0) inputBuffer[len++] = (char)ch;",
+        examples: [
+          "int ch = GetCharPressed();\nif (ch != 0) inputBuffer[len++] = (char)ch;",
+          "// Handle text input with backspace\nint ch = GetCharPressed();\nwhile (ch > 0) {\n    if (ch >= 32 && ch <= 125) name[nameLen++] = (char)ch;\n    ch = GetCharPressed();\n}\nif (IsKeyPressed(KEY_BACKSPACE) && nameLen > 0) nameLen--;",
+        ],
+        returns: "int - Unicode character code, or 0 if none",
+      },
+    ],
+  },
+  {
+    category: "Drawing Lines (Advanced)",
+    description: "Additional line and shape drawing functions for more visual control.",
+    functions: [
+      {
+        name: "DrawLineEx",
+        signature: "void DrawLineEx(Vector2 startPos, Vector2 endPos, float thick, Color color)",
+        description: "Draws a line with a specific thickness. Unlike DrawLine which is always 1 pixel thin, this lets you draw thick, visible lines.",
+        params: [
+          { name: "startPos", type: "Vector2", desc: "Starting point {x, y}" },
+          { name: "endPos", type: "Vector2", desc: "Ending point {x, y}" },
+          { name: "thick", type: "float", desc: "Line thickness in pixels" },
+          { name: "color", type: "Color", desc: "Line color" },
+        ],
+        example: "DrawLineEx((Vector2){100, 100}, (Vector2){400, 300}, 3.0f, RED);",
+        examples: [
+          "DrawLineEx((Vector2){100, 100}, (Vector2){400, 300}, 3.0f, RED);",
+          "// Draw a thick border around the screen\nDrawLineEx((Vector2){0, 0}, (Vector2){800, 0}, 5.0f, DARKGRAY);\nDrawLineEx((Vector2){0, 0}, (Vector2){0, 450}, 5.0f, DARKGRAY);",
+        ],
+        returns: "void",
+      },
+      {
+        name: "DrawRectangleGradientV",
+        signature: "void DrawRectangleGradientV(int posX, int posY, int width, int height, Color top, Color bottom)",
+        description: "Draws a rectangle with a vertical gradient from top color to bottom color. Great for sky backgrounds or UI elements.",
+        params: [
+          { name: "posX", type: "int", desc: "X position" },
+          { name: "posY", type: "int", desc: "Y position" },
+          { name: "width", type: "int", desc: "Width" },
+          { name: "height", type: "int", desc: "Height" },
+          { name: "top", type: "Color", desc: "Top color" },
+          { name: "bottom", type: "Color", desc: "Bottom color" },
+        ],
+        example: "// Sky gradient background\nDrawRectangleGradientV(0, 0, 800, 450, SKYBLUE, WHITE);",
+        returns: "void",
+      },
+      {
+        name: "DrawRing",
+        signature: "void DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color)",
+        description: "Draws a ring (donut shape) or arc. Useful for health bars, loading indicators, or decorative UI elements.",
+        params: [
+          { name: "center", type: "Vector2", desc: "Center point {x, y}" },
+          { name: "innerRadius", type: "float", desc: "Inner radius (hole size)" },
+          { name: "outerRadius", type: "float", desc: "Outer radius" },
+          { name: "startAngle", type: "float", desc: "Starting angle in degrees (0 = right)" },
+          { name: "endAngle", type: "float", desc: "Ending angle in degrees" },
+          { name: "segments", type: "int", desc: "Smoothness (36 is good)" },
+          { name: "color", type: "Color", desc: "Ring color" },
+        ],
+        example: "// Draw a full ring\nDrawRing((Vector2){400, 225}, 40, 60, 0, 360, 36, PURPLE);",
+        examples: [
+          "// Draw a full ring\nDrawRing((Vector2){400, 225}, 40, 60, 0, 360, 36, PURPLE);",
+          "// Health bar as partial ring (75% health)\nfloat healthPercent = 0.75f;\nDrawRing((Vector2){400, 225}, 50, 65, 0, 360 * healthPercent, 36, GREEN);",
+        ],
+        returns: "void",
+      },
+    ],
+  },
+  {
+    category: "Audio",
+    description: "Functions for playing sound effects and music. Remember to call InitAudioDevice() before loading any audio, and CloseAudioDevice() before CloseWindow().",
+    functions: [
+      {
+        name: "InitAudioDevice",
+        signature: "void InitAudioDevice(void)",
+        description: "Initializes the audio system. Call this after InitWindow() and before loading any sounds or music.",
+        params: [],
+        example: "InitWindow(800, 450, \"My Game\");\nInitAudioDevice();  // Set up audio after window",
+        returns: "void",
+      },
+      {
+        name: "CloseAudioDevice",
+        signature: "void CloseAudioDevice(void)",
+        description: "Closes the audio system. Call this before CloseWindow() in your cleanup section.",
+        params: [],
+        example: "CloseAudioDevice();\nCloseWindow();",
+        returns: "void",
+      },
+      {
+        name: "LoadSound",
+        signature: "Sound LoadSound(const char *fileName)",
+        description: "Loads a sound effect from a file (WAV, OGG, MP3). Sound is loaded into memory for fast playback — good for short effects like jumps, clicks, or explosions.",
+        params: [
+          { name: "fileName", type: "const char *", desc: "Path to the audio file" },
+        ],
+        example: 'Sound jumpSound = LoadSound("jump.wav");',
+        returns: "Sound",
+      },
+      {
+        name: "PlaySound",
+        signature: "void PlaySound(Sound sound)",
+        description: "Plays a loaded sound effect. Can be called multiple times to play the sound again.",
+        params: [
+          { name: "sound", type: "Sound", desc: "A previously loaded Sound" },
+        ],
+        example: "if (IsKeyPressed(KEY_SPACE)) PlaySound(jumpSound);",
+        returns: "void",
+      },
+      {
+        name: "UnloadSound",
+        signature: "void UnloadSound(Sound sound)",
+        description: "Frees the memory used by a loaded sound. Call this during cleanup before CloseAudioDevice().",
+        params: [
+          { name: "sound", type: "Sound", desc: "The sound to unload" },
+        ],
+        example: "UnloadSound(jumpSound);",
+        returns: "void",
+      },
+      {
+        name: "LoadMusicStream",
+        signature: "Music LoadMusicStream(const char *fileName)",
+        description: "Loads a music file for streaming playback (WAV, OGG, MP3). Unlike Sound, music is streamed from disk — better for long tracks like background music.",
+        params: [
+          { name: "fileName", type: "const char *", desc: "Path to the music file" },
+        ],
+        example: 'Music bgMusic = LoadMusicStream("background.ogg");',
+        returns: "Music",
+      },
+      {
+        name: "PlayMusicStream",
+        signature: "void PlayMusicStream(Music music)",
+        description: "Starts playing a loaded music stream. Call this once to begin playback.",
+        params: [
+          { name: "music", type: "Music", desc: "A previously loaded Music stream" },
+        ],
+        example: "PlayMusicStream(bgMusic);",
+        returns: "void",
+      },
+      {
+        name: "UpdateMusicStream",
+        signature: "void UpdateMusicStream(Music music)",
+        description: "Updates the music stream buffer. You MUST call this every frame inside your game loop for music to keep playing.",
+        params: [
+          { name: "music", type: "Music", desc: "The active music stream" },
+        ],
+        example: "// Inside your game loop:\nUpdateMusicStream(bgMusic);",
+        examples: [
+          "// Inside your game loop:\nUpdateMusicStream(bgMusic);",
+          "// Complete music setup:\nMusic bgm = LoadMusicStream(\"song.ogg\");\nPlayMusicStream(bgm);\nwhile (!WindowShouldClose()) {\n    UpdateMusicStream(bgm);  // Must call every frame!\n    // ... rest of game loop\n}",
+        ],
+        returns: "void",
+      },
+    ],
+  },
+  {
+    category: "Textures",
+    description: "Functions for loading and drawing images/sprites. Great for adding custom graphics to your projects beyond basic shapes.",
+    functions: [
+      {
+        name: "LoadTexture",
+        signature: "Texture2D LoadTexture(const char *fileName)",
+        description: "Loads an image file (PNG, JPG, BMP) as a texture that can be drawn on screen. Load it once before your game loop, not every frame.",
+        params: [
+          { name: "fileName", type: "const char *", desc: "Path to the image file" },
+        ],
+        example: 'Texture2D playerSprite = LoadTexture("player.png");',
+        returns: "Texture2D",
+      },
+      {
+        name: "DrawTexture",
+        signature: "void DrawTexture(Texture2D texture, int posX, int posY, Color tint)",
+        description: "Draws a texture at the given position. Use WHITE as the tint to draw the original colors. Use other colors to tint the image.",
+        params: [
+          { name: "texture", type: "Texture2D", desc: "The loaded texture" },
+          { name: "posX", type: "int", desc: "X position (top-left corner)" },
+          { name: "posY", type: "int", desc: "Y position (top-left corner)" },
+          { name: "tint", type: "Color", desc: "Color tint (WHITE = no tint)" },
+        ],
+        example: "DrawTexture(playerSprite, playerX, playerY, WHITE);",
+        examples: [
+          "DrawTexture(playerSprite, playerX, playerY, WHITE);",
+          "// Draw with a red tint (for damage flash)\nDrawTexture(playerSprite, playerX, playerY, RED);",
+          "// Draw semi-transparent\nDrawTexture(playerSprite, playerX, playerY, Fade(WHITE, 0.5f));",
+        ],
+        returns: "void",
+      },
+      {
+        name: "UnloadTexture",
+        signature: "void UnloadTexture(Texture2D texture)",
+        description: "Frees the GPU memory used by a loaded texture. Call this during cleanup before CloseWindow().",
+        params: [
+          { name: "texture", type: "Texture2D", desc: "The texture to unload" },
+        ],
+        example: "UnloadTexture(playerSprite);",
+        returns: "void",
       },
     ],
   },

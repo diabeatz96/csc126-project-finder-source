@@ -10,11 +10,16 @@ function Quiz() {
     investigative: 0,
     artistic: 0,
     social: 0,
-    humanist: 0,
+    enterprising: 0,
+    conventional: 0,
   });
+  const [history, setHistory] = useState([]);
   const navigate = useNavigate();
 
   const handleAnswer = (optionScores) => {
+    // Save current scores to history for undo
+    setHistory([...history, { scores: { ...scores }, question: currentQ }]);
+
     const newScores = { ...scores };
     Object.keys(optionScores).forEach((key) => {
       newScores[key] += optionScores[key];
@@ -27,32 +32,36 @@ function Quiz() {
       const winner = Object.entries(newScores).reduce((a, b) =>
         a[1] > b[1] ? a : b
       )[0];
-      navigate(`/results/${winner}`);
+      navigate(`/results/${winner}`, { state: { scores: newScores } });
+    }
+  };
+
+  const handleBack = () => {
+    if (history.length > 0) {
+      const prev = history[history.length - 1];
+      setScores(prev.scores);
+      setCurrentQ(prev.question);
+      setHistory(history.slice(0, -1));
     }
   };
 
   const question = quizQuestions[currentQ];
   const letters = ["A", "B", "C", "D"];
+  const progress = ((currentQ + 1) / quizQuestions.length) * 100;
 
   return (
     <div className="max-w-2xl mx-auto py-4">
-      {/* Progress Dots */}
-      <div className="flex gap-2 mb-8">
-        {quizQuestions.map((_, i) => (
+      {/* Progress Bar */}
+      <div className="mb-8">
+        <div
+          className="w-full h-3 border-2 border-foreground bg-muted overflow-hidden"
+          style={{ borderRadius: "40px 8px 50px 6px / 8px 50px 6px 40px" }}
+        >
           <div
-            key={i}
-            className={`
-              flex-1 h-3 border-2 border-foreground transition-all duration-300
-              ${i < currentQ ? "bg-green-400" : i === currentQ ? "bg-accent" : "bg-muted"}
-            `}
-            style={{
-              borderRadius:
-                i % 2 === 0
-                  ? "40px 8px 50px 6px / 8px 50px 6px 40px"
-                  : "8px 40px 6px 50px / 50px 6px 40px 8px",
-            }}
+            className="h-full bg-accent transition-all duration-500 ease-out"
+            style={{ width: `${progress}%` }}
           />
-        ))}
+        </div>
       </div>
 
       {/* Question Number */}
@@ -107,7 +116,7 @@ function Quiz() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => setCurrentQ(currentQ - 1)}
+            onClick={handleBack}
           >
             ← Back
           </Button>

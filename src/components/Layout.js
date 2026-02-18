@@ -7,9 +7,10 @@ function Layout({ children }) {
 
   const links = [
     { to: "/", label: "Home" },
-    { to: "/quiz", label: "Take the Quiz" },
-    { to: "/api", label: "Raylib API" },
-    { to: "/setup", label: "Setup Guide" },
+    { to: "/quiz", label: "Quiz" },
+    { to: "/projects", label: "All Projects" },
+    { to: "/api", label: "API" },
+    { to: "/setup", label: "Setup" },
   ];
 
   return (
@@ -70,6 +71,9 @@ function Layout({ children }) {
           Built with raylib for graphics projects
           <span className="mx-2">*</span>
           Powered by Holland's RIASEC model
+        </p>
+        <p className="font-hand text-foreground/40 text-sm mt-2">
+          With contributions from Jadon, Antoni, and Josue
         </p>
       </footer>
     </div>

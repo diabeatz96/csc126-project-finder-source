@@ -58,12 +58,21 @@ function FunctionCard({ fn }) {
             </div>
           )}
 
-          {/* Example */}
+          {/* Examples */}
           <div className="mt-4">
-            <div className="font-kalam text-xs font-bold text-foreground/60 uppercase tracking-wide mb-2">
-              Example
-            </div>
-            <pre className="code-block text-sm text-green-700">{fn.example}</pre>
+            {(() => {
+              const examples = fn.examples || (fn.example ? [fn.example] : []);
+              return (
+                <>
+                  <div className="font-kalam text-xs font-bold text-foreground/60 uppercase tracking-wide mb-2">
+                    {examples.length > 1 ? "Examples" : "Example"}
+                  </div>
+                  {examples.map((ex, idx) => (
+                    <pre key={idx} className={`code-block text-sm text-green-700 ${idx < examples.length - 1 ? "mb-2" : ""}`}>{ex}</pre>
+                  ))}
+                </>
+              );
+            })()}
           </div>
         </div>
       )}
