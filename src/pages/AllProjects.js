@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import projectRecommendations from "../data/projectRecommendations";
-import { Button, Badge } from "../components/ui";
+import { Button } from "../components/ui";
 import ProjectCard from "../components/ProjectCard";
 
 const typeOrder = ["realistic", "investigative", "artistic", "social", "enterprising", "conventional"];

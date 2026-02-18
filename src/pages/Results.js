@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useLocation, Link } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import projectRecommendations from "../data/projectRecommendations";
 import { Button, Card } from "../components/ui";
 import { Printer, Download } from "lucide-react";
