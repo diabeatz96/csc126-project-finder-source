@@ -7,6 +7,7 @@ import Results from "./pages/Results";
 import ApiRef from "./pages/ApiRef";
 import Setup from "./pages/Setup";
 import AllProjects from "./pages/AllProjects";
+import Practice from "./pages/Practice";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/results/:type" element={<Results />} />
           <Route path="/projects" element={<AllProjects />} />
+          <Route path="/practice" element={<Practice />} />
           <Route path="/api" element={<ApiRef />} />
           <Route path="/setup" element={<Setup />} />
         </Routes>

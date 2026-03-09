@@ -8,7 +8,8 @@ function Layout({ children }) {
   const links = [
     { to: "/", label: "Home" },
     { to: "/quiz", label: "Quiz" },
-    { to: "/projects", label: "All Projects" },
+    { to: "/projects", label: "Projects" },
+    { to: "/practice", label: "Practice" },
     { to: "/api", label: "API" },
     { to: "/setup", label: "Setup" },
   ];
